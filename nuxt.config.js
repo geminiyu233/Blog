@@ -28,6 +28,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    '@/assets/styles/reset.scss'
   ],
 
   /*
@@ -59,6 +60,9 @@ module.exports = {
     */
     extend(config, ctx) {
       
+    },
+    build: {
+      vendor: ['axios']
     }
   }
 }
