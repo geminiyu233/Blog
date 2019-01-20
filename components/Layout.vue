@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <div class="app-main">
-      <section class="app-left">
+      <div class="app-left">
         <slot name="left"></slot>
-      </section>
-      <aside class="app-right">
+      </div>
+      <div class="app-right">
         <slot name="right"></slot>
-      </aside>
+      </div>
     </div>
     <footer class="footer">
       <slot name="footer"></slot>
@@ -37,9 +37,13 @@ export default {
     overflow: hidden;
     .app-left {
       @include flex(1 1 auto);
+      @include wh(100%, 100%);
     }
     .app-right {
+      @include display-flex;
+      @include flex-direction(column);
       @include flex(0 0 240px);
+      @include wh(100%, 100%);
       margin-left: $space-h-m;
     }
   }

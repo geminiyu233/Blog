@@ -1,7 +1,7 @@
 <template>
-  <section class="container">
+  <div class="home">
     首页
-  </section>
+  </div>
 </template>
 
 <script>
@@ -10,6 +10,10 @@ export default {
   layout: 'Default'
 }
 </script>
-
-<style>
+<style lang="scss" scoped>
+.home {
+  width: 100%;
+  height: 100%;
+}
 </style>
+

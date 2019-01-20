@@ -19,3 +19,15 @@ $space-h-l: 30px;
 $space-v-s: 8px;
 $space-v-m: 15px;
 $space-v-l: 30px;
+
+// border-color
+$border-color: #eaeaea;
+
+// border-radius
+$border-radius: 4px;
+
+/* Box-shadow
+-------------------------- */
+$shadow-base: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04) !default;
+$shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12) !default;
+$shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !default;
