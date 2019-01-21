@@ -10,7 +10,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variables.scss';
+@import '@/static/styles/variables.scss';
 .card {
   padding: 15px;
   margin-bottom: $space-v-m;

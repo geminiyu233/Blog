@@ -20,8 +20,8 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import '@/assets/styles/mixins/index.scss';
-@import '@/assets/styles/variables.scss';
+@import '@/static/styles/mixins/index.scss';
+@import '@/static/styles/variables.scss';
 .app-container {
   @include display-flex;
   @include flex-direction(column);

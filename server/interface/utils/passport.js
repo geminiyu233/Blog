@@ -1,6 +1,3 @@
-// import passport from 'koa-passport'
-// import localStrategy from 'passport-local'
-// import Admin from '../../dbs/models/admin'
 const passport = require('koa-passport')
 const localStrategy = require('passport-local')
 const Admin = require('../../dbs/models/admin')

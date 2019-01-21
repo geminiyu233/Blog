@@ -29,9 +29,9 @@ router.post('/signup', async function(ctx) {
     })
     if(nadmin) {
       ctx.body = {
-        code: 0,
+        code: 200,
         msg: '注册成功',
-        admin: res.data.admin
+        admin: admin
       }
     } else {
       ctx.body = {
@@ -43,7 +43,7 @@ router.post('/signup', async function(ctx) {
 })
 
 // 登录
-router.post('/signin', async (ctx, next) => {
+router.post('/login', async (ctx, next) => {
   return passport.authenticate('local', function(err, user, info, status) {
     if(err){
       ctx.body = {
@@ -53,7 +53,7 @@ router.post('/signin', async (ctx, next) => {
     } else {
       if(user) {
         ctx.body = {
-          code: 0,
+          code: 200,
           msg: '登录成功',
           user
         }
@@ -73,7 +73,7 @@ router.get('/exit', async (ctx) => {
   await ctx.logout()
   if(!ctx.isAuthenticated()) {
     ctx.body = {
-      code: 0
+      code: 200
     }
   } else {
     ctx.body = {
