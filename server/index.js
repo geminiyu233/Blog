@@ -12,16 +12,33 @@ const dbConfig = require('./dbs/config')
 const passport = require('./interface/utils/passport')
 const admin = require('./interface/admin')
 
-app.keys=['ys','keyskeys']
+// 这是处理前端跨域的配置
+const cors = require('koa2-cors')
+app.use(cors({
+  origin: function (ctx) {
+    if (ctx.url === '/login') {
+      return "*"; // 允许来自所有域名请求
+    }
+    return 'http://localhost:8080';
+  },
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}))
+
 app.proxy = true
+app.keys=['ys','keyskeys']
 // middlewares
 app.use(session({
   key: 'ys',
   prefix: 'ys:uid',
   store: new Redis()
 }))
-app.use(json())
 
+app.use(json())
+// 用于接收并解析前台发送过来的post数据
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
