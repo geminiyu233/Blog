@@ -3,6 +3,36 @@ const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 
 const app = new Koa()
+const bodyparser = require('koa-bodyparser')
+const json = require('koa-json') // 美化返回给客户端数据格式
+const session = require('koa-generic-session')
+const Redis = require('koa-redis')
+const mongoose = require('mongoose')
+const dbConfig = require('./dbs/config')
+const passport = require('./interface/utils/passport')
+const admin = require('./interface/admin')
+
+app.keys=['ys','keyskeys']
+app.proxy = true
+// middlewares
+app.use(session({
+  key: 'ys',
+  prefix: 'ys:uid',
+  store: new Redis()
+}))
+app.use(json())
+
+app.use(bodyparser({
+  enableTypes:['json', 'form', 'text']
+}))
+
+// mongoose
+mongoose.connect(dbConfig.dbs, {
+  useNewUrlParser: true
+})
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')
@@ -22,6 +52,9 @@ async function start() {
     const builder = new Builder(nuxt)
     await builder.build()
   }
+
+  // routes
+  app.use(admin.routes(), admin.allowedMethods())
 
   app.use(ctx => {
     ctx.status = 200

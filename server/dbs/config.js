@@ -7,10 +7,5 @@ module.exports = ({
     get port() {
       return 6379
     }
-  },
-  get code() {
-    return () => {
-      return Math.random().toString(16).slice(2,6).toLowerCase()
-    }
   }
 })
