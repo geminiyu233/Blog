@@ -1,5 +1,5 @@
 const Router = require('koa-router')
-const passport = require('./utils/passport')
+const passport = require('../utils/passport')
 const Admin = require('../dbs/models/admin')
 
 let router = new Router({
@@ -44,7 +44,6 @@ router.post('/signup', async function (ctx) {
 // 登录
 router.post('/login', async (ctx, next) => {
   return passport.authenticate('local', function (err, data, info, status) {
-    console.log(data)
     if (err) {
       ctx.body = {
         code: 1,
@@ -85,13 +84,11 @@ router.get('/exit', async (ctx) => {
 
 // 获取管理员信息
 router.get('/getAdmin', async (ctx) => {
-  console.log(ctx.isAuthenticated())
   // 需要验证用户是否登录的时候就可以通过ctx.isAuthenticated()函数
   if (ctx.isAuthenticated()) {
     const {
       user
     } = ctx.session.passport
-    console.log(ctx.session.passport)
     ctx.body = {
       code: 200,
       data: user

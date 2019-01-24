@@ -1,7 +1,8 @@
 const passport = require('koa-passport')
 const localStrategy = require('passport-local')
-const Admin = require('../../dbs/models/admin')
+const Admin = require('../dbs/models/admin')
 
+// 提交策略
 passport.use(new localStrategy(async function(username, password, done) {
   let where = { username }
   let result = await Admin.findOne(where)

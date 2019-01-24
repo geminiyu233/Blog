@@ -9,24 +9,32 @@ const session = require('koa-generic-session')
 const Redis = require('koa-redis')
 const mongoose = require('mongoose')
 const dbConfig = require('./dbs/config')
-const passport = require('./interface/utils/passport')
-const admin = require('./interface/admin')
+const passport = require('./utils/passport')
+const admin = require('./api/admin')
 
 // 这是处理前端跨域的配置
-const cors = require('koa2-cors')
-app.use(cors({
-  origin: function (ctx) {
-    if (ctx.url === '/login') {
-      return "*"; // 允许来自所有域名请求
-    }
-    return 'http://localhost:8080';
-  },
-  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-  maxAge: 5,
-  credentials: true,
-  allowMethods: ['GET', 'POST', 'DELETE'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-}))
+// const cors = require('koa2-cors')
+// app.use(cors({
+//   origin: function (ctx) {
+//     if (ctx.url === '/admin/login') {
+//       return "*"; // 允许来自所有域名请求
+//     }
+//     return 'http://localhost:8080';
+//   },
+//   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+//   maxAge: 5,
+//   credentials: true,
+//   allowMethods: ['GET', 'POST', 'DELETE'],
+//   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+// }))
+
+app.use(async (ctx, next) => {
+  ctx.set('Access-Control-Allow-Origin', ctx.headers.origin) // 很奇怪的是，使用 * 会出现一些其他问题
+  ctx.set('Access-Control-Allow-Headers', 'content-type')
+  ctx.set('Access-Control-Allow-Methods', 'OPTIONS,GET,HEAD,PUT,POST,DELETE,PATCH')
+  ctx.set('Access-Control-Allow-Credentials', true)
+  await next()
+})
 
 app.proxy = true
 app.keys=['ys','keyskeys']
