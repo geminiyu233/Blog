@@ -10,7 +10,7 @@ const Redis = require('koa-redis')
 const mongoose = require('mongoose')
 const dbConfig = require('./dbs/config')
 const passport = require('./utils/passport')
-const admin = require('./api/admin')
+const admin = require('./routers/admin')
 
 // 这是处理前端跨域的配置
 // const cors = require('koa2-cors')
