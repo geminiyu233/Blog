@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
-
 let adminSchema = new mongoose.Schema({
-  user_name: {
+  username: {
     type: String,
     unique: true, // 在属性中定义一个唯一索引
     required: true
@@ -11,7 +10,16 @@ let adminSchema = new mongoose.Schema({
     required: true
   },
   token: String,
-  create_time: Date
+  id: Number,
+  city: String,
+  create_time: {
+    type: Date,
+    default: Date.now
+  },
+  role: {
+    type: String,
+    default: 'ADMIN'
+  }
 })
 
- module.exports = mongoose.model('Admin', adminSchema)
+module.exports = mongoose.model('Admin', adminSchema)

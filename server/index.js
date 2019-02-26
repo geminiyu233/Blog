@@ -3,17 +3,14 @@ const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 
 const app = new Koa()
-const bodyparser = require('koa-bodyparser')
+const bodyparser = require('koa-bodyparser') // 解析body
 const json = require('koa-json') // 美化返回给客户端数据格式
-const session = require('koa-generic-session')
-const Redis = require('koa-redis')
 const mongoose = require('mongoose')
 const dbConfig = require('./dbs/config')
-const passport = require('./utils/passport')
 const admin = require('./routers/admin')
 
 // 这是处理前端跨域的配置
-// const cors = require('koa2-cors')
+// const cors = require('koa2-cors') //处理跨域
 // app.use(cors({
 //   origin: function (ctx) {
 //     if (ctx.url === '/admin/login') {
@@ -39,12 +36,6 @@ app.use(async (ctx, next) => {
 app.proxy = true
 app.keys=['ys','keyskeys']
 // middlewares
-app.use(session({
-  key: 'ys',
-  prefix: 'ys:uid',
-  store: new Redis()
-}))
-
 app.use(json())
 // 用于接收并解析前台发送过来的post数据
 app.use(bodyparser({
@@ -55,9 +46,6 @@ app.use(bodyparser({
 mongoose.connect(dbConfig.dbs, {
   useNewUrlParser: true
 })
-
-app.use(passport.initialize())
-app.use(passport.session())
 
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')
