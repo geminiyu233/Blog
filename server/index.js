@@ -10,28 +10,21 @@ const dbConfig = require('./dbs/config')
 const admin = require('./routers/admin')
 
 // 这是处理前端跨域的配置
-// const cors = require('koa2-cors') //处理跨域
-// app.use(cors({
-//   origin: function (ctx) {
-//     if (ctx.url === '/admin/login') {
-//       return "*"; // 允许来自所有域名请求
-//     }
-//     return 'http://localhost:8080';
-//   },
-//   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-//   maxAge: 5,
-//   credentials: true,
-//   allowMethods: ['GET', 'POST', 'DELETE'],
-//   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-// }))
-
-app.use(async (ctx, next) => {
-  ctx.set('Access-Control-Allow-Origin', ctx.headers.origin) // 很奇怪的是，使用 * 会出现一些其他问题
-  ctx.set('Access-Control-Allow-Headers', 'content-type')
-  ctx.set('Access-Control-Allow-Methods', 'OPTIONS,GET,HEAD,PUT,POST,DELETE,PATCH')
-  ctx.set('Access-Control-Allow-Credentials', true)
-  await next()
-})
+const cors = require('koa2-cors') //处理跨域
+app.use(cors({
+  origin: function (ctx) {
+    // if (ctx.url === '/login') {
+    //   return "*"; // 允许来自所有域名请求
+    // }
+    // return 'http://localhost:9528';
+    return "*";
+  },
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}))
 
 app.proxy = true
 app.keys=['ys','keyskeys']

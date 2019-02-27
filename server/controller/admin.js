@@ -35,21 +35,23 @@ class Admin extends AddressComponent {
         console.log('用户名不存在');
         const admin_id = await this.getId('admin_id');
         const cityInfo = await this.guessPosition(ctx);
-        let admin = await AdminModel.create({
+        let doc = await AdminModel.create({
           id: admin_id,
           username,
           password: newpassword,
-          token: createToken(this.username), //创建token并存入数据库
+          token: createToken(username), //创建token并存入数据库
           city: cityInfo.city,
           create_time: moment(Date.now()).valueOf()
         })
-        if (admin) {
+        if (doc) {
           console.log('注册成功');
           ctx.body = {
             success: true,
             message: '注册成功, 请登录',
-            admin_id: admin_id,
-            token
+            data: {
+              token: doc.token,
+              id: doc.id
+            }
           };
         } else {
           ctx.body = {
@@ -67,14 +69,15 @@ class Admin extends AddressComponent {
         console.log('登录成功', admin)
         //生成一个新的token,并存到数据库
         let token = createToken(username);
-        await admin.updateOne({admin_id: admin.id}, {token: token})
-        // admin.token = token; // 登录成功 创建一个新的token存入数据库
-        // await admin.save()
+        admin.token = token; // 登录成功 创建一个新的token存入数据库
+        await admin.save()
         ctx.body = {
           success: true,
           message: '登录成功',
-          admin_id: admin.id,
-          token
+          data: {
+            token: admin.token,
+            id: admin.id
+          }
         };
       }
     } catch (err) {
@@ -82,6 +85,35 @@ class Admin extends AddressComponent {
       ctx.body = {
         success: false,
         message: '登录管理员失败',
+      };
+    }
+  }
+
+  async getAdmin(ctx) {
+    const { id } = ctx.request.query
+    try {
+      const admin = await AdminModel.findOne({
+        id
+      })
+      console.log('管理员信息', admin)
+      if (admin) {
+        ctx.body = {
+          success: true,
+          message: '查询管理员信息成功',
+          data: {
+            id: admin.id,
+            username: admin.username,
+            role: admin.role
+          }
+        }
+      } else {
+        throw new Error('未找到当前管理员')
+      }
+    } catch (err) {
+      console.log('获取管理员信息失败', err);
+      ctx.body = {
+        success: false,
+        message: '获取管理员失败',
       };
     }
   }

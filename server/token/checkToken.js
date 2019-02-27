@@ -5,11 +5,12 @@ const config = require('../dbs/config')
 
 //检查token
 module.exports = async (ctx, next) => {
-  const authorization = ctx.get('Authorization')
-  if (authorization === '') {
+  console.log('ctx', ctx)
+  const token = ctx.header.authorization
+  console.log('token', token)
+  if (token === '') {
     ctx.throw(401, '请求头Authorization中未包含token')
   }
-  const token = authorization.split(' ')[1]
   let payload
   try {
     payload = await verify(token, config.secret) // // 解密，获取payload

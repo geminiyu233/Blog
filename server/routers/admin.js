@@ -10,7 +10,7 @@ router.post('/login', Admin.login);
 router.post('/singout', Admin.singout);
 
 //需要先检查权限的路由
-// router.get('/Admin', checkToken, Admin.GetAllAdmins);
+router.get('/getAdmin', checkToken, Admin.getAdmin);
 // router.post('/delAdmin', checkToken, Admin.DelAdmin);
 
 module.exports = router;
