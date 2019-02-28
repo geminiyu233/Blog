@@ -5,9 +5,7 @@ const config = require('../dbs/config')
 
 //检查token
 module.exports = async (ctx, next) => {
-  console.log('ctx', ctx)
   const token = ctx.header.authorization
-  console.log('token', token)
   if (token === '') {
     ctx.throw(401, '请求头Authorization中未包含token')
   }

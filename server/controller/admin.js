@@ -90,10 +90,11 @@ class Admin extends AddressComponent {
   }
 
   async getAdmin(ctx) {
-    const { id } = ctx.request.query
+    const { token } = ctx.request.query
+    console.log('token', token)
     try {
       const admin = await AdminModel.findOne({
-        id
+        token
       })
       console.log('管理员信息', admin)
       if (admin) {
