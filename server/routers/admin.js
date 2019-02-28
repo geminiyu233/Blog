@@ -13,4 +13,4 @@ router.post('/singout', Admin.singout);
 router.get('/getAdmin', checkToken, Admin.getAdmin);
 // router.post('/delAdmin', checkToken, Admin.DelAdmin);
 
-module.exports = router;
+export default router

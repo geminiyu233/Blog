@@ -2,12 +2,13 @@ const Koa = require('koa')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 
-const app = new Koa()
 const bodyparser = require('koa-bodyparser') // 解析body
 const json = require('koa-json') // 美化返回给客户端数据格式
 const mongoose = require('mongoose')
 const dbConfig = require('./dbs/config')
-const admin = require('./routers/admin')
+import router from './routers/index.js'
+const app = new Koa()
+// const admin = require('./routers/admin')
 
 // 这是处理前端跨域的配置
 // const cors = require('koa2-cors') //处理跨域
@@ -60,7 +61,7 @@ async function start() {
   }
 
   // routes
-  app.use(admin.routes(), admin.allowedMethods())
+  router(app)
 
   app.use(ctx => {
     ctx.status = 200

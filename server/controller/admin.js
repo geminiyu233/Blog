@@ -1,4 +1,4 @@
-const AdminModel = require('../dbs/models/admin')
+import AdminModel from '../dbs/models/admin'
 import AddressComponent from '../prototype/addressComponent'
 
 //用于密码加密
