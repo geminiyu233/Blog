@@ -33,7 +33,7 @@ class AddressComponent extends BaseComponent {
 		 			ip,
 		 			key: this.tencentkey,
 				 })
-				 console.log('地址result', result);
+				//  console.log('地址result', result);
 		 		if (result.status == 0) {
 		 			const cityInfo = {
 		 				lat: result.result.location.lat,

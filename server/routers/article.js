@@ -1,12 +1,11 @@
-import TagModel from '../controller/tag'
+import Article from '../controller/article'
 import Router from 'koa-router'
 
 const router = new Router()
-router.prefix('/tag')
-
+router.prefix('/article')
 //checkToken作为中间件存在
 const checkToken = require('../token/checkToken.js');
 
-router.get('/all', checkToken, TagModel.getAllTag)
+router.post('/create', checkToken, Article.addArticle)
 
 export default router

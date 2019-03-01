@@ -1,12 +1,12 @@
-import TagModel from '../dbs/models/tag'
+import ArticleTagModel from '../dbs/models/tag'
 import BaseComponent from '../prototype/baseComponent'
 
-class Tag extends BaseComponent {
+class ArticleTag extends BaseComponent {
   constructor() {
     super()
   }
 
-  async addTag(ctx) {
+  async addArticleTag(ctx) {
     const { tagName } = ctx.request.body
     console.log('tagName', tagName)
     try {
@@ -31,13 +31,12 @@ class Tag extends BaseComponent {
     }
   }
 
-  async creatTag(label) {
-    const tag_id = await this.getId('tag_id')
-    const tag = await TagModel.create({
-      id: tag_id,
-      label
+  async creat(tag_id, article_id) {
+    const doc = await TagModel.create({
+      tag_id,
+      article_id
     })
-    return tag ? tag : false
+    return doc ? doc : false
   }
 
   async getAllTag(ctx) {
@@ -88,4 +87,4 @@ class Tag extends BaseComponent {
   }
 }
 
-export default new Tag()
+export default new ArticleTag()

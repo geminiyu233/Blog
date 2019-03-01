@@ -66,7 +66,7 @@ class Admin extends AddressComponent {
           message: '该用户已存在，密码输入错误',
         };
       } else {
-        console.log('登录成功', admin)
+        // console.log('登录成功', admin)
         //生成一个新的token,并存到数据库
         let token = createToken(username);
         admin.token = token; // 登录成功 创建一个新的token存入数据库
@@ -91,12 +91,12 @@ class Admin extends AddressComponent {
 
   async getAdmin(ctx) {
     const { token } = ctx.request.query
-    console.log('token', token)
+    // console.log('token', token)
     try {
       const admin = await AdminModel.findOne({
         token
       })
-      console.log('管理员信息', admin)
+      // console.log('管理员信息', admin)
       if (admin) {
         ctx.body = {
           success: true,

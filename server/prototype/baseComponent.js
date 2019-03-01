@@ -3,10 +3,12 @@ import Ids from '../dbs/models/ids'
 
 export default class BaseComponent {
   constructor() {
-    this.idList = ['restaurant_id', 'food_id', 'order_id', 'user_id', 'address_id', 'cart_id', 'img_id', 'category_id', 'item_id', 'sku_id', 'admin_id', 'statis_id'];
+    this.idList = ['admin_id', 'tag_id', 'article_id', 'article_statu_id', 'draft_id', 'permission_id'];
+    this.getId = this.getId.bind(this)
   }
   //获取id列表
   async getId(type) {
+    console.log('type', type)
     if (!this.idList.includes(type)) {
       console.log('id类型错误');
       throw new Error('id类型错误');
@@ -14,11 +16,9 @@ export default class BaseComponent {
     }
     try {
       const idData = await Ids.findOne();
-      console.log('idData', idData);
-      await idData.updateOne({
-        admin_id: ++idData[type]
-      });
-      return idData[type]
+			idData[type] ++ ;
+			await idData.save();
+			return idData[type]
     } catch (err) {
       console.log('获取ID数据失败');
       throw new Error(err)
