@@ -8,6 +8,7 @@ class Article extends BaseComponent {
   constructor() {
     super()
     this.addArticle = this.addArticle.bind(this)
+    this.createArticle = this.createArticle.bind(this)
   }
 
   async addArticle(ctx) {
@@ -20,46 +21,52 @@ class Article extends BaseComponent {
       author,
       status,
     } = ctx.request.body
-    console.log('1111',
-      tag_ids,
-      create_time,
-      abstract,
-      content,
-      title,
-      author,
-      status)
     try {
-      const article_statu_id = await ArticleStatu.feach(status)
-      console.log('article_statu_id', article_statu_id)
-      if (article_statu_id) {
-        const article_id = await this.getId('article_id')
-        console.log('article_id', article_id)
-        const article = await ArticleModel.create({
-          id: article_id,
-          create_time,
-          abstract,
-          content,
-          title,
-          author,
-          article_statu_id,
-        })
-        for (let element of tag_ids) {
-          const tag = element.id ? await Tag.feachTag(element.id) : await Tag.creatTag(element.label)
-          const doc = await ArticleTag.creat(tag.id, article.id)
-          if (doc) {
-            ctx.body = {
-              success: true,
-              message: '文章发布成功',
-            }
-          } else {
-            ctx.body = {
-              success: false,
-              message: '文章发布失败',
-            }
+      // 根据文章状态获取状态id
+      const article_statu_id = await ArticleStatu.feachStatuId(status, ctx)
+      const article_id = await this.getId('article_id')
+      const params = {
+        id: article_id,
+        create_time,
+        abstract,
+        content,
+        title,
+        author,
+        article_statu_id
+      }
+      const article = await this.createArticle(params, ctx)
+      // 将新建文章的标签们循环添加到articletags表中
+      for (let element of tag_ids) {
+        const tag = element.id ? await Tag.feachTag(element.id, ctx) : await Tag.creatTag(element.label, ctx)
+        const articleTag = await ArticleTag.creat(tag.id, article.id, ctx)
+        if (!articleTag) {
+          ctx.body = {
+            success: false,
+            message: '文章标签添加失败',
           }
         }
+        ctx.body = {
+          success: true,
+          message: '文章发布成功',
+          data: article
+        }
+      }
+    } catch (err) {
+      console.log('文章发布失败', err)
+      ctx.body = {
+        success: false,
+        message: '文章发布失败',
+      }
+    }
+  }
+
+  async createArticle(params, ctx) {
+    try {
+      const article = await ArticleModel.create(params)
+      if (article) {
+        return article
       } else {
-        console.log('获取文章状态id失败')
+        console.log('文章发布失败')
         ctx.body = {
           success: false,
           message: '文章发布失败',

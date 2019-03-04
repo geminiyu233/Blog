@@ -1,18 +1,32 @@
-import ArticleStatuModel from '../dbs/models/article_statu'
+import ArticleStatuModel from '../dbs/models/articlestatus'
 import BaseComponent from '../prototype/baseComponent'
 
 class ArticleStatu extends BaseComponent {
   constructor() {
     super()
-    this.feach = this.feach.bind(this)
   }
 
-  async feach(statu) {
-    const doc = await ArticleStatuModel.find({})
-    console.log('statu', doc)
-    const statu_id = await ArticleStatuModel.findOne({ statu })
-    console.log(statu_id)
-    return statu_id ? statu_id : false
+  async feachStatuId(name, ctx) {
+    try {
+      const ArticleStatu = await ArticleStatuModel.findOne({
+        name
+      })
+      if (ArticleStatu) {
+        return parseInt(ArticleStatu.id)
+      } else {
+        console.log('获取文章状态id失败')
+        ctx.body = {
+          success: false,
+          message: '获取文章状态id失败',
+        }
+      }
+    } catch (err) {
+      console.log('获取文章状态id失败', err)
+      ctx.body = {
+        success: false,
+        message: '获取文章状态id失败',
+      }
+    }
   }
 }
 

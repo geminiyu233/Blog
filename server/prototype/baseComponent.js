@@ -3,8 +3,7 @@ import Ids from '../dbs/models/ids'
 
 export default class BaseComponent {
   constructor() {
-    this.idList = ['admin_id', 'tag_id', 'article_id', 'article_statu_id', 'draft_id', 'permission_id'];
-    this.getId = this.getId.bind(this)
+    this.idList = ['admin_id', 'tag_id', 'article_id', 'article_statu_id', 'draft_id', 'permission_id']
   }
   //获取id列表
   async getId(type) {

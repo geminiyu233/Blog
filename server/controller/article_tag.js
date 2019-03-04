@@ -1,4 +1,12 @@
-import ArticleTagModel from '../dbs/models/tag'
+/*
+ * @Author: mikey.zhaopeng 
+ * @Date: 2019-03-04 10:46:27 
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2019-03-04 14:06:43
+ * 为某篇文章添加标签
+ */
+
+import ArticleTagModel from '../dbs/models/articletag'
 import BaseComponent from '../prototype/baseComponent'
 
 class ArticleTag extends BaseComponent {
@@ -6,84 +14,28 @@ class ArticleTag extends BaseComponent {
     super()
   }
 
-  async addArticleTag(ctx) {
-    const { tagName } = ctx.request.body
-    console.log('tagName', tagName)
+  async creat(tag_id, article_id, ctx) {
     try {
-      const tag = await creatTag(tagName)
-      if (tag) {
-        ctx.body = {
-          success: false,
-          message: '标签添加成功',
-        }
+      const doc = await ArticleTagModel.create({
+        tag_id,
+        article_id
+      })
+      if (doc) {
+        return doc
       } else {
+        console.log('文章标签添加失败', err)
         ctx.body = {
           success: false,
-          message: '标签添加失败',
+          message: '文章标签添加失败',
         }
       }
     } catch (err) {
-      console.log('标签添加失败', err)
+      console.log('文章标签添加失败', err)
       ctx.body = {
         success: false,
-        message: '标签添加失败',
+        message: '文章标签添加失败',
       }
     }
-  }
-
-  async creat(tag_id, article_id) {
-    const doc = await TagModel.create({
-      tag_id,
-      article_id
-    })
-    return doc ? doc : false
-  }
-
-  async getAllTag(ctx) {
-    try {
-      const tags = await TagModel.find({})
-      if(tags) {
-        ctx.body = {
-          success: true,
-          data: tags
-        }
-      }
-    } catch (err) {
-      console.log('获取标签失败', err)
-      ctx.body = {
-        success: false,
-        message: '获取标签失败',
-      }
-    }
-  }
-  async getTag(ctx) {
-    const { id } = ctx.request.body
-    try {
-      const tag = await feachTag({id})
-      if(tag) {
-        ctx.body = {
-          success: true,
-          data: tag
-        }
-      } else {
-        console.log('获取标签失败', err)
-        ctx.body = {
-          success: false,
-          message: '获取标签失败',
-        }
-      }
-    } catch (err) {
-      console.log('获取标签失败', err)
-      ctx.body = {
-        success: false,
-        message: '获取标签失败',
-      }
-    }
-  }
-
-  async feachTag(id) {
-    const tag = await TagModel.findOne({id})
-    return tag ? tag : false
   }
 }
 

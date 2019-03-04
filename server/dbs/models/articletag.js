@@ -5,6 +5,6 @@ const ArticleTagSchema = new mongoose.Schema({
   tag_id: Number
 });
 
-const ArticleTagSchema = mongoose.model('ArticleTagSchema', ArticleTagSchema);
+const ArticleTag = mongoose.model('ArticleTag', ArticleTagSchema);
 
-export default ArticleTagSchema
+export default ArticleTag

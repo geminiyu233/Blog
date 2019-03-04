@@ -8,16 +8,11 @@ const mongoose = require('mongoose')
 const dbConfig = require('./dbs/config')
 import router from './routers/index.js'
 const app = new Koa()
-// const admin = require('./routers/admin')
 
 // 这是处理前端跨域的配置
 // const cors = require('koa2-cors') //处理跨域
 // app.use(cors({
 //   origin: function (ctx) {
-//     // if (ctx.url === '/login') {
-//     //   return "*"; // 允许来自所有域名请求
-//     // }
-//     // return 'http://localhost:9528';
 //     return "*";
 //   },
 //   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
