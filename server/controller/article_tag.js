@@ -2,11 +2,11 @@
  * @Author: mikey.zhaopeng 
  * @Date: 2019-03-04 10:46:27 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-03-04 14:06:43
+ * @Last Modified time: 2019-03-04 18:30:19
  * 为某篇文章添加标签
  */
 
-import ArticleTagModel from '../dbs/models/articletag'
+import ArticleTagModel from '../dbs/models/articletags'
 import BaseComponent from '../prototype/baseComponent'
 
 class ArticleTag extends BaseComponent {
@@ -34,6 +34,28 @@ class ArticleTag extends BaseComponent {
       ctx.body = {
         success: false,
         message: '文章标签添加失败',
+      }
+    }
+  }
+
+  async getArticleTags(article_id, ctx) {
+    try {
+      const tags = await ArticleTagModel.find({ article_id })
+      console.log('tag', tags)
+      if(tags.length) {
+        return tags
+      } else {
+        console.log('文章标签获取失败')
+        ctx.body = {
+          success: false,
+          message: '文章标签获取失败',
+        }
+      }
+    } catch (err) {
+      console.log('文章标签获取失败', err)
+      ctx.body = {
+        success: false,
+        message: '文章标签获取失败',
       }
     }
   }

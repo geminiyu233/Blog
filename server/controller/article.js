@@ -3,18 +3,16 @@ import ArticleModel from '../dbs/models/article'
 import Tag from './tag'
 import ArticleTag from './article_tag'
 import ArticleStatu from './article_statu'
+import moment from 'moment'
 
 class Article extends BaseComponent {
   constructor() {
     super()
-    this.addArticle = this.addArticle.bind(this)
-    this.createArticle = this.createArticle.bind(this)
   }
 
   async addArticle(ctx) {
     const {
       tag_ids,
-      create_time,
       abstract,
       content,
       title,
@@ -27,7 +25,6 @@ class Article extends BaseComponent {
       const article_id = await this.getId('article_id')
       const params = {
         id: article_id,
-        create_time,
         abstract,
         content,
         title,
@@ -81,6 +78,44 @@ class Article extends BaseComponent {
     }
   }
 
+  async getDraft(ctx) {
+    try {
+      const STATU = 'draft'
+      // 根据文章状态获取状态id
+      const article_statu_id = await ArticleStatu.feachStatuId(STATU, ctx)
+      let articles = await ArticleModel.find({
+        article_statu_id
+      })
+      if (articles.length) {
+        articles = articles.map(item => {
+          return {
+            id: item.id,
+            create_time: moment(item.create_time).format('X'),
+            title: item.title,
+            author: item.author
+          }
+        })
+        ctx.body = {
+          success: true,
+          message: '草稿箱列表获取成功',
+          data: articles
+        }
+      } else {
+        console.log('获取草稿箱文章列表失败')
+        ctx.body = {
+          success: false,
+          message: '获取草稿箱文章列表失败',
+        }
+      }
+    } catch (err) {
+      console.log('获取草稿箱文章列表失败', err)
+      ctx.body = {
+        success: false,
+        message: '获取草稿箱文章列表失败',
+      }
+    }
+  }
+
   async getArticle(ctx) {
     try {
       const tags = await ArticleModel.find({})
@@ -95,8 +130,8 @@ class Article extends BaseComponent {
         message: '获取标签失败',
       }
     }
-
   }
+
 }
 
 export default new Article()
