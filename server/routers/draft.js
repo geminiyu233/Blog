@@ -1,11 +1,12 @@
-import Article from '../controller/article'
+import Draft from '../controller/draft'
 import Router from 'koa-router'
 
 const router = new Router()
-router.prefix('/article')
+router.prefix('/draft')
 //checkToken作为中间件存在
 const checkToken = require('../token/checkToken.js')
 
-router.post('/create', checkToken, Article.addArticle)
+router.get('/get', checkToken, Draft.getDraft)
+router.post('/delete', checkToken, Draft.delDraft)
 
 export default router
