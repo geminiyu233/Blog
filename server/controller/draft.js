@@ -16,27 +16,18 @@ class Draft extends BaseComponent {
       let articles = await ArticleModel.find({
         article_statu_id
       })
-      console.log('草稿箱', articles)
-      if (articles.length) {
-        articles = articles.map(item => {
-          return {
-            id: item.id,
-            create_time: moment(item.create_time).format('X'),
-            title: item.title,
-            author: item.author
-          }
-        })
-        ctx.body = {
-          success: true,
-          message: '草稿箱列表获取成功',
-          data: articles
+      articles = articles.map(item => {
+        return {
+          id: item.id,
+          create_time: moment(item.create_time).format('X'),
+          title: item.title,
+          author: item.author
         }
-      } else {
-        console.log('获取草稿箱文章列表失败')
-        ctx.body = {
-          success: false,
-          message: '获取草稿箱文章列表失败',
-        }
+      })
+      ctx.body = {
+        success: true,
+        message: '草稿箱列表获取成功',
+        data: articles
       }
     } catch (err) {
       console.log('获取草稿箱文章列表失败', err)
@@ -49,7 +40,7 @@ class Draft extends BaseComponent {
 
   async delDraft(ctx) {
     const { id } = ctx.request.body
-      let doc = await ArticleModel.remove({ id })
+      let doc = await ArticleModel.findOneAndDelete({ id })
       if (doc) {
         ctx.body = {
           success: true,

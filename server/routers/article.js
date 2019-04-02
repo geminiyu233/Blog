@@ -7,5 +7,6 @@ router.prefix('/article')
 const checkToken = require('../token/checkToken.js')
 
 router.post('/create', checkToken, Article.addArticle)
+router.post('/getByTagId', checkToken, Article.getByTagId)
 
 export default router

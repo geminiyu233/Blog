@@ -33,7 +33,8 @@ app.use(bodyparser({
 
 // mongoose
 mongoose.connect(dbConfig.dbs, {
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useCreateIndex: true
 })
 
 // Import and Set Nuxt.js options

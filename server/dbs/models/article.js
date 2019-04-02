@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import moment from 'moment'
 
 const articleSchema = new mongoose.Schema({
   id: Number,
