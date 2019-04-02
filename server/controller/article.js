@@ -79,11 +79,13 @@ class Article extends BaseComponent {
   }
 
   async getByTagId(ctx) {
-    console.log(11111111111111)
-    const { tagId } = ctx.request.body
+    const { tagId } = ctx.request.query
     try {
+      console.log('tagId', tagId)
       const articleIds = await ArticleTag.getArticleByTagId(tagId)
       console.log('articleIds', articleIds)
+      const articles = ArticleModel.find({ id: { $in: articleIds } })
+      console.log('articles', articles)
     } catch (err) {
       console.log('根据tagId获取文章列表失败', err)
       ctx.body = {

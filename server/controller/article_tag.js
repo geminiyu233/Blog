@@ -2,7 +2,7 @@
  * @Author: mikey.zhaopeng 
  * @Date: 2019-03-04 10:46:27 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-04-01 15:51:27
+ * @Last Modified time: 2019-04-02 17:02:58
  * 为某篇文章添加标签
  */
 
@@ -61,13 +61,12 @@ class ArticleTag extends BaseComponent {
   }
 
   async getArticleByTagId(tag_id, ctx) {
-    console.log(11111111111111)
     try {
-      const tags = await ArticleTagModel.find({ tag_id }, { article_id: 1 })
-      ctx.body = {
-        success: true,
-        data: tags
-      }
+      const article_ids = await ArticleTagModel.find({ tag_id }, 'article_id')
+      let articleIds = article_ids.map(item => {
+        return item.article_id
+      })
+      return articleIds
     } catch (err) {
       console.log('根据tagId获取文章列表失败', err)
       ctx.body = {
@@ -76,7 +75,6 @@ class ArticleTag extends BaseComponent {
       }
     }
   }
-
   
 }
 
